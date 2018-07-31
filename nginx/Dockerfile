@@ -54,8 +54,8 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& cd /usr/src \
 	&& addgroup -S www \
 	&& adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G www www \
-	&& curl -fSL https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx.tar.gz \
-	&& curl -fSL https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz.asc  -o nginx.tar.gz.asc \
+	&& curl -fSL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx.tar.gz \
+	&& curl -fSL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz.asc  -o nginx.tar.gz.asc \
 	&& export GNUPGHOME="$(mktemp -d)" \
 	&& found=''; \
 	for server in \
@@ -75,7 +75,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& git clone https://github.com/openresty/echo-nginx-module.git \
 	&& git clone https://github.com/openresty/headers-more-nginx-module.git \
 	&& git clone https://github.com/tszming/nginx-rewrite-request-body-module.git \
-	&& git clone https://github.com/simpl/ngx_devel_kit.git \
+	&& git clone https://github.com/simplresty/ngx_devel_kit.git \
 	&& git clone https://github.com/dcshi/ngx_http_qrcode_module.git \
 	&& git clone https://github.com/qch-china/ngx-http-status-code-counter.git \
 	&& git clone https://github.com/magicbear/ngx_realtime_request_module.git \
