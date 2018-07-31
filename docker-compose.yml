@@ -1,0 +1,86 @@
+version: '3'
+services:
+    mariadb:
+        build: ./mariadb
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: test
+            MYSQL_USER: admin
+            MYSQL_PASSWORD: mariadb
+        networks:
+            - network-backend
+
+    php:
+        build: ./php7
+        ports:
+            - "9000:9000"
+        links:
+            - mariadb
+        volumes:
+            - ./web:/data/web
+            - ./logs:/data/logs
+        networks:
+            - network-backend
+
+    nginx:
+        build: ./nginx
+        ports:
+            - "80:80"
+            - "443:443"
+        links:
+            - php
+        volumes:
+            - ./web:/data/web
+            - ./logs:/data/logs
+        networks:
+            - network-backend
+    redis:
+        image: redis
+        ports:
+            - "6379:6379"
+        networks:
+            - network-backend
+
+    redisCommander:
+        image: tenstartups/redis-commander
+        command: --redis-host redis
+        links:
+          - redis:redis
+        ports:
+          - "8081:8081"
+        networks:
+          - network-backend
+
+    memcached:
+        image: memcached
+        expose:
+            - 11211
+        ports:
+            - "11211:11211"
+        networks:
+            - network-backend
+
+    mongodb:
+        image: 'tutum/mongodb'
+        ports:
+            - "27017:27017"
+        environment:
+            - AUTH=no
+        #$manager = new MongoDB\Driver\Manager("mongodb://mongodb:27017");
+        networks:
+            - network-backend
+
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: rabbitmq
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+            - "25672:25672"
+        networks:
+            - network-backend
+
+networks:
+    network-backend:
