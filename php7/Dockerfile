@@ -203,6 +203,7 @@ RUN set -xe \
 	&& pecl update-channels \
 	&& rm -rf ~/.pearrc \
 	&& php /usr/local/bin/composer config -g repo.packagist composer https://packagist.phpcomposer.com \
+	&& mkdir -p  /data/web /data/logs \
 	&& cd /data/web 
 
 COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
