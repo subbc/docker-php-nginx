@@ -17,10 +17,10 @@ ENV PHPIZE_DEPS \
 # persistent / runtime deps
 RUN apk add --no-cache --virtual .persistent-deps \
 		ca-certificates findutils \
-		curl curl-dev \
+		curl curl-dev git \
 		tar zlib-dev \
 		xz libressl-dev \
-		libressl libtool
+		libressl libtool 
                 
 # ensure www user exists
 RUN set -x \
@@ -178,7 +178,7 @@ RUN set -xe \
 		--enable-memcached-json \
 		--with-libmemcached-dir \
 	&& make -j "$(nproc)" && make install  \
-	&& curl -fsSL https://github.com/phalcon/cphalcon/archive/v3.4.0.tar.gz -o cphalcon.tar.gz \
+	&& curl -fsSL https://github.com/phalcon/cphalcon/archive/v3.3.2.tar.gz -o cphalcon.tar.gz \
 	&& tar zxf cphalcon.tar.gz -C /tmp/tmp/cphalcon --strip-components=1 \
 	&& cd /tmp/tmp/cphalcon/build \
 	&& sh install \
@@ -200,9 +200,12 @@ RUN set -xe \
 	&& apk del .build-deps \
 	\
 	&& pecl update-channels \
-	&& rm -rf ~/.pearrc 
+	&& rm -rf ~/.pearrc \
+	&& php composer config -g repo.packagist composer https://packagist.phpcomposer.com \
+	&& cd /data/web 
 
 COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
+COPY composer /usr/local/bin/
 COPY etc/www.conf /usr/local/etc/php-fpm.d/
 COPY etc/php.ini /usr/local/etc/php/
 
