@@ -205,9 +205,9 @@ RUN set -xe \
 	&& php /usr/local/bin/composer config -g repo.packagist composer https://packagist.phpcomposer.com \
 	&& mkdir -p  /data/web /data/logs 
 
-COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
-COPY etc/www.conf /usr/local/etc/php-fpm.d/
-COPY etc/php.ini /usr/local/etc/php/
+#COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
+COPY php-fpm.d/www.conf /usr/local/etc/php-fpm.d/
+COPY php/php.ini /usr/local/etc/php/
 
 ENTRYPOINT ["docker-php-entrypoint"]
 WORKDIR /data/web

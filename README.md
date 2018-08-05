@@ -14,6 +14,56 @@ composer下载地址： https://getcomposer.org/download/
 Git下载地址：https://git-scm.com/downloads
 docker下载地址： https://download.docker.com/win/static/stable/x86_64/
 
+4、拉取镜像与启动
+#拉取镜像
+docker pull eelly-php7
+docker pull eelly-nginx
+
+# linux nginx
+docker run -p 80:80 -p 443:443 -d \
+    --name=subbc/eelly-nginx \
+    -v $PWD/web:/data/web \
+	-v $PWD/logs:/data/logs \
+    -v $PWD/nginx/conf.d:/etc/nginx/conf.d \
+    eelly-nginx
+
+docker run -p 9000:9000 -d \
+    --name=subbc/eelly-php7 \
+    -v $PWD/web:/data/web \
+	-v $PWD/logs:/data/logs \
+    -v $PWD/php7:/usr/local/etc \
+    eelly-php7
+
+
+# windows 需要绝对路径
+docker run -p 80:80 -p 443:443 -d \
+    --name=subbc/eelly-nginx \
+    -v D:/docker/file/web:/data/web \
+    -v D:/docker/file/logs:/data/logs \
+    -v D:/docker/file/nginx/conf.d:/etc/nginx/conf.d \
+    eelly-nginx
+	
+docker run -p 9000:9000 -d \
+    --name=subbc/eelly-php7 \
+    -v D:/docker/file/web:/data/web \
+    -v D:/docker/file/logs:/data/logs \
+    -v D:/docker/file/php7:/usr/local/etc \
+    eelly-php7
+
+# windows mariadb server
+docker run -p 3306:3306 \
+    --name=eelly-mariadb \
+    -e MYSQL_ROOT_PASSWORD=123456 \
+    -d mariadb
+
+运行composer
+
+# linux
+docker exec eelly-php7 composer install -d api.eelly.com -vvv
+# windows
+winpty docker exec eelly-php7 composer install -d api.eelly.com -vvv
+
+
 
 
 

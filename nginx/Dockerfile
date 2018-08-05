@@ -121,7 +121,6 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 
 COPY nginx.conf eelly.dev.* server.ssl.conf /etc/nginx/
 COPY conf.d/* /etc/nginx/conf.d/
-##COPY p.php  /data/web/default/
 
 EXPOSE 80
 EXPOSE 443
