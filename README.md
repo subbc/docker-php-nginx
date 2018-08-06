@@ -19,36 +19,37 @@ docker下载地址： https://download.docker.com/win/static/stable/x86_64/
 docker pull eelly-php7
 docker pull eelly-nginx
 
-# linux nginx
-docker run -p 80:80 -p 443:443 -d \
-    --name=subbc/eelly-nginx \
-    -v $PWD/web:/data/web \
-	-v $PWD/logs:/data/logs \
-    -v $PWD/nginx/conf.d:/etc/nginx/conf.d \
-    eelly-nginx
+# linux 需要绝对路径
+docker run -p 9000:9000 -d --name=php \
+	-v /data/docker/file/web:/data/web \
+	-v /data/docker/file/logs:/data/logs \
+	-v /data/docker/file/php7/php:/usr/local/etc/php \
+	-v /data/docker/file/php7/php-fpm.d:/usr/local/etc/php-fpm.d \
+	subbc/eelly-php7
 
-docker run -p 9000:9000 -d \
-    --name=subbc/eelly-php7 \
-    -v $PWD/web:/data/web \
-	-v $PWD/logs:/data/logs \
-    -v $PWD/php7:/usr/local/etc \
-    eelly-php7
-
+docker run -p 80:80 -p 443:443 -d --name=nginx \
+	--link php:php \
+	-v /data/docker/file/web:/data/web \
+	-v /data/docker/file/logs:/data/logs \
+	-v /data/docker/file/nginx/conf.d:/etc/nginx/conf.d \
+	subbc/eelly-nginx
 
 # windows 需要绝对路径
+docker run -p 9000:9000 -d \
+    --name=php \
+    -v D:/docker/file/web:/data/web \
+    -v D:/docker/file/logs:/data/logs \
+    -v D:/docker/file/php7/php:/usr/local/etc/php \
+	-v D:/docker/file/php7/php-fpm.d:/usr/local/etc/php-fpm.d \
+    subbc/eelly-php7
+	
 docker run -p 80:80 -p 443:443 -d \
-    --name=subbc/eelly-nginx \
+    --name=nginx \
+	--link php:php \
     -v D:/docker/file/web:/data/web \
     -v D:/docker/file/logs:/data/logs \
     -v D:/docker/file/nginx/conf.d:/etc/nginx/conf.d \
-    eelly-nginx
-	
-docker run -p 9000:9000 -d \
-    --name=subbc/eelly-php7 \
-    -v D:/docker/file/web:/data/web \
-    -v D:/docker/file/logs:/data/logs \
-    -v D:/docker/file/php7:/usr/local/etc \
-    eelly-php7
+    subbc/eelly-nginx
 
 # windows mariadb server
 docker run -p 3306:3306 \
@@ -65,5 +66,6 @@ winpty docker exec eelly-php7 composer install -d api.eelly.com -vvv
 
 
 
+docker run -p 9000:9000 -d --name=php -v /data/docker/file/web:/data/web -v /data/docker/file/logs:/data/logs -v /data/docker/file/php7/php:/usr/local/etc/php -v /data/docker/file/php7/php-fpm.d:/usr/local/etc/php-fpm.d subbc/eelly-php7
 
-
+docker run -p 80:80 -p 443:443 -d --name=nginx --link php:php -v /data/docker/file/web:/data/web -v /data/docker/file/logs:/data/logs -v /data/docker/file/nginx/conf.d:/etc/nginx/conf.d subbc/eelly-nginx
