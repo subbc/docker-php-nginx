@@ -64,8 +64,3 @@ docker exec eelly-php7 composer install -d api.eelly.com -vvv
 # windows
 winpty docker exec eelly-php7 composer install -d api.eelly.com -vvv
 
-
-
-docker run -p 9000:9000 -d --name=php -v /data/docker/file/web:/data/web -v /data/docker/file/logs:/data/logs -v /data/docker/file/php7/php:/usr/local/etc/php -v /data/docker/file/php7/php-fpm.d:/usr/local/etc/php-fpm.d subbc/eelly-php7
-
-docker run -p 80:80 -p 443:443 -d --name=nginx --link php:php -v /data/docker/file/web:/data/web -v /data/docker/file/logs:/data/logs -v /data/docker/file/nginx/conf.d:/etc/nginx/conf.d subbc/eelly-nginx
