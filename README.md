@@ -60,7 +60,7 @@ docker run -p 3306:3306 \
 运行composer
 
 # linux
-docker exec eelly-php7 composer install -d api.eelly.com -vvv
+docker exec php composer install -d api.eelly.com -vvv     ###可以把install改update
 # windows
-winpty docker exec eelly-php7 composer install -d api.eelly.com -vvv
+winpty docker exec php composer install -d api.eelly.com -vvv
 
